@@ -1,14 +1,14 @@
-const User = require("../models/UserModel");
+const User = require('../models/UserModel');
 
 module.exports.getLikedMovies = async (req, res) => {
   try {
     const { email } = req.params;
     const user = await await User.findOne({ email });
     if (user) {
-      return res.json({ msg: "success", movies: user.likedMovies });
-    } else return res.json({ msg: "User with given email not found." });
+      return res.json({ msg: 'success', movies: user.likedMovies });
+    } else return res.json({ msg: 'User with given email not found.' });
   } catch (error) {
-    return res.json({ msg: "Error fetching movies." });
+    return res.json({ msg: 'Error fetching movies.' });
   }
 };
 
@@ -27,11 +27,11 @@ module.exports.addToLikedMovies = async (req, res) => {
           },
           { new: true }
         );
-      } else return res.json({ msg: "Movie already added to the liked list." });
+      } else return res.json({ msg: 'Movie already added to the liked list.' });
     } else await User.create({ email, likedMovies: [data] });
-    return res.json({ msg: "Movie successfully added to liked list." });
+    return res.json({ msg: 'Movie successfully added to liked list.' });
   } catch (error) {
-    return res.json({ msg: "Error adding movie to the liked list" });
+    return res.json({ msg: 'Error adding movie to the liked list' });
   }
 };
 
@@ -43,7 +43,7 @@ module.exports.removeFromLikedMovies = async (req, res) => {
       const movies = user.likedMovies;
       const movieIndex = movies.findIndex(({ id }) => id === movieId);
       if (!movieIndex) {
-        res.status(400).send({ msg: "Movie not found." });
+        res.status(400).send({ msg: 'Movie not found.' });
       }
       movies.splice(movieIndex, 1);
       await User.findByIdAndUpdate(
@@ -53,9 +53,9 @@ module.exports.removeFromLikedMovies = async (req, res) => {
         },
         { new: true }
       );
-      return res.json({ msg: "Movie successfully removed.", movies });
-    } else return res.json({ msg: "User with given email not found." });
+      return res.json({ msg: 'Movie successfully removed.', movies });
+    } else return res.json({ msg: 'User with given email not found.' });
   } catch (error) {
-    return res.json({ msg: "Error removing movie to the liked list" });
+    return res.json({ msg: 'Error removing movie to the liked list' });
   }
 };
